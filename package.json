@@ -13,6 +13,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-
+    "@aws-sdk/lib-dynamodb": "^3.259.0",
+    "uuid": "^9.0.0"
   }
 }
