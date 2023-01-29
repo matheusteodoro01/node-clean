@@ -1,6 +1,6 @@
-import { Car } from "@/domain/models/car"
+import { Car } from '@/domain/models/car'
 import { SaveCarRepositoryContract, SaveCarImageRepositoryContract } from '@/domain/repositories'
-import { DataStoreProviderContract } from "@/domain/providers"
+import { DataStoreProviderContract } from '@/domain/providers'
 
 
 export namespace ProcessCarUsecase {

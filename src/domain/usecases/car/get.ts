@@ -1,10 +1,10 @@
 import { GetCarRepositoryContract } from '@/domain/repositories'
-import { Car } from '../models'
+import { Car } from '@/domain/models'
 
 
 export namespace GetCarUsecase {
   export type Input = { carId: string, }
-  export type Output = { car: Car }
+  export type Output = Car
 }
 
 export class GetCarUsecase {
@@ -17,6 +17,6 @@ export class GetCarUsecase {
     if (!car) {
       throw new Error('Car not found')
     }
-    return {car}
+    return car
   }
 }

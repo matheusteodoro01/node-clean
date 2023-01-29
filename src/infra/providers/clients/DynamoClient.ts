@@ -2,7 +2,7 @@ import { DynamoDB } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
 
 export class DynamoDBClient {
-  private client: DynamoDBDocumentClient
+  private client?: DynamoDBDocumentClient
   get connection() {
     if (!this.client) {
       const dynamo = new DynamoDB({})

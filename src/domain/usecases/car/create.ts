@@ -1,6 +1,6 @@
-import { Car } from "@/domain/models/car"
+import { Car } from '@/domain/models/car'
 import { GetUserRepositoryContract } from '@/domain/repositories'
-import { MessageSenderProviderContract } from "@/domain/providers"
+import { MessageSenderProviderContract } from '@/domain/providers'
 
 
 export namespace CreateCarUsecase {

@@ -1,5 +1,5 @@
 import { SaveCarRepositoryContract } from "@/domain/repositories";
-import { DynamoDBClient } from "@/infra/providers/clients/DynamoClient";
+import { DynamoDBClient } from "@/infra/providers/clients/dynamoClient";
 import { PutCommand } from "@aws-sdk/lib-dynamodb/dist-types/commands";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,13 +17,7 @@ export class DynamoSaveCarRepository implements SaveCarRepositoryContract {
       }
     }
 
-    await this.dynamoClient.connection.send(new PutCommand({
-      TableName: this.tableName,
-      Item: {
-        ...car,
-        carId: uuidv4()
-      }
-    }))
+    await this.dynamoClient.connection.send(new PutCommand(params))
     return params.Item
   }
 }                          
