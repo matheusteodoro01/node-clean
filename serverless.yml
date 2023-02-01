@@ -1,0 +1,35 @@
+service: car-service
+
+plugins:
+  - serverless-bundle
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+package:
+  individually: false
+
+custom:
+  serverless-offline:
+    httpPort: 3001
+    lambdaPort: 3000
+    noPrependStageInUrl: true
+  bundle:
+    excludeFiles:
+      - '**/*.spec.ts'
+      - 'jest.setup.ts'
+    forceInclude: # Optional list of NPM packages that need to be included
+    externals: # Set non Webpack compatible packages as externals
+      - '@nestjs/common'
+      - '@nestjs/core'
+      - '@nestjs/platform-express'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  timeout: 20
+
+functions:
+  api:
+    handler: src/main/api/handler.handler
+    events:
+      - httpApi: '*'
