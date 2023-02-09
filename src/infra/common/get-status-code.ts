@@ -1,20 +1,16 @@
 import { HttpStatus } from '@nestjs/common'
-import {
-  NotFoundError,
-} from '@/domain/errors'
+import { NotFoundError } from '@/domain/errors'
+import { ZodError } from 'zod'
 
-type Code = {
-  http: number
-}
-
-export const getStatusCode = (error: Error): Code => {
+export const getStatusCode = (error: Error) => {
   switch (error.constructor) {
+    case ZodError:
+      return HttpStatus.BAD_REQUEST
+
     case NotFoundError:
-      return { http: HttpStatus.NOT_FOUND }
+      return HttpStatus.NOT_FOUND
 
     default:
-      return {
-        http: HttpStatus.INTERNAL_SERVER_ERROR
-      }
+      return HttpStatus.INTERNAL_SERVER_ERROR
   }
 }

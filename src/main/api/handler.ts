@@ -1,24 +1,21 @@
-import { AllExceptionsFilter } from '@/infra/common/http-exception-filter';
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import serverlessExpress from '@vendia/serverless-express';
-import { Callback, Context, Handler } from 'aws-lambda';
-import { AppModule } from '@/main/modules/app.module';
+import { HttpExceptionFilter } from '@/infra/common/http-exception-filter'
+import { NestFactory } from '@nestjs/core'
+import serverlessExpress from '@vendia/serverless-express'
+import { Callback, Context, Handler } from 'aws-lambda'
+import { AppModule } from '@/main/modules/app.module'
 
-let server: Handler;
+let server: Handler
 
 async function bootstrap(): Promise<Handler> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
 
-  const expressApp = app.getHttpAdapter().getInstance();
+  app.useGlobalFilters(new HttpExceptionFilter())
 
-  app.useGlobalPipes(new ValidationPipe());
+  await app.init()
 
-  app.useGlobalFilters(new AllExceptionsFilter(expressApp));
+  const expressApp = app.getHttpAdapter().getInstance()
 
-  await app.init();
-
-  return serverlessExpress({ app: expressApp });
+  return serverlessExpress({ app: expressApp })
 }
 
 export const handler: Handler = async (
@@ -26,6 +23,6 @@ export const handler: Handler = async (
   context: Context,
   callback: Callback,
 ) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
-};
+  server = server ?? (await bootstrap())
+  return server(event, context, callback)
+}

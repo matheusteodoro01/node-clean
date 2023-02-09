@@ -5,10 +5,9 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-offline
 
-package:
-  individually: false
-
 custom:
+  CarTableName: 'cars'
+  CarImagesBucketName: 'car-images-kittech'
   serverless-offline:
     httpPort: 3001
     lambdaPort: 3000
@@ -17,8 +16,7 @@ custom:
     excludeFiles:
       - '**/*.spec.ts'
       - 'jest.setup.ts'
-    forceInclude: # Optional list of NPM packages that need to be included
-    externals: # Set non Webpack compatible packages as externals
+    externals:
       - '@nestjs/common'
       - '@nestjs/core'
       - '@nestjs/platform-express'
@@ -26,10 +24,50 @@ custom:
 provider:
   name: aws
   runtime: nodejs16.x
-  timeout: 20
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:PutObject
+      Resource:
+      - Fn::GetAtt: [ CarImagesBucket, Arn ]
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+      - Fn::GetAtt: [ CarsTable, Arn ]
+  environment:
+    CAR_TABLE: ${self:custom.CarTableName}
+    CAR_IMAGES_BUCKET: ${self:custom.CarImagesBucketName}
 
 functions:
   api:
     handler: src/main/api/handler.handler
     events:
       - httpApi: '*'
+
+resources:
+  Resources:
+    CarImagesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.CarImagesBucketName}
+    CarsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.CarTableName}
+        AttributeDefinitions:
+          - AttributeName: carId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: carId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+

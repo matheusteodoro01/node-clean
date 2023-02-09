@@ -1,18 +1,9 @@
-import { IsEmail, IsNotEmpty, IsString, IsPhoneNumber } from 'class-validator';
+import { string, object } from 'zod'
 
-export class CreateUserDto {
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  password: string;
-
-  @IsNotEmpty()
-  passwordConfirmation: string;
-
-  @IsString()
-  name: string
-
-  @IsPhoneNumber()
-  phone: string
-}
+export const createUserDto = object({
+  email: string(),
+  password: string(),
+  passwordConfirmation: string(),
+  name: string(),
+  phone: string(),
+})

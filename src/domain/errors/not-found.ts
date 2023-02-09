@@ -1,6 +1,7 @@
+import { HttpException, HttpStatus } from '@nestjs/common'
+
 export class NotFoundError extends Error {
-  constructor(message?: string) {
-    super(message || `resource not found`)
-    this.name = 'NotFoundError'
+  constructor(message: string) {
+    super(message)
   }
 }

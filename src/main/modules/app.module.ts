@@ -4,8 +4,5 @@ import { CarModule } from './car.module'
 
 @Module({
   imports: [CarModule],
-  controllers: [
-    CreateUserController
-  ]
 })
-export class AppModule { }
+export class AppModule {}
