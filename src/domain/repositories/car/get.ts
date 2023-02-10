@@ -1,4 +1,4 @@
-import { Car } from "@/domain/models/car";
+import { Car } from '@/domain/models/car'
 
 export namespace GetCarRepositoryContract {
   export type Input = { carId: string }
@@ -6,5 +6,7 @@ export namespace GetCarRepositoryContract {
 }
 
 export interface GetCarRepositoryContract {
-  execute(input: GetCarRepositoryContract.Input): Promise<GetCarRepositoryContract.Output>
+  execute(
+    input: GetCarRepositoryContract.Input
+  ): Promise<GetCarRepositoryContract.Output>
 }

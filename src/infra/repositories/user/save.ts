@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 export class DynamoSaveUserRepository implements SaveUserRepositoryContract {
   constructor(
     private readonly dynamoClient: DynamoDBDocumentClient,
-    private readonly tableName: string,
+    private readonly tableName: string
   ) {}
 
   async execute({
@@ -14,7 +14,7 @@ export class DynamoSaveUserRepository implements SaveUserRepositoryContract {
     name,
     password,
     passwordConfirmation,
-    phone,
+    phone
   }: SaveUserRepositoryContract.Input): Promise<SaveUserRepositoryContract.Output> {
     const params = {
       TableName: this.tableName,
@@ -25,8 +25,8 @@ export class DynamoSaveUserRepository implements SaveUserRepositoryContract {
         passwordConfirmation,
         phone,
         carId: uuidv4(),
-        userId: uuidv4(),
-      },
+        userId: uuidv4()
+      }
     }
 
     await this.dynamoClient.send(new PutCommand(params))

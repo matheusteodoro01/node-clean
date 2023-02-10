@@ -9,21 +9,21 @@ import { EmailValidatorProvider } from '@/infra/providers'
   providers: [
     {
       provide: infra.clients.dynamoDb,
-      useFactory: () => DynamoDBDocumentClient.from(new DynamoDB({})),
+      useFactory: () => DynamoDBDocumentClient.from(new DynamoDB({}))
     },
     {
       provide: infra.clients.s3,
-      useFactory: () => new S3Client({}),
+      useFactory: () => new S3Client({})
     },
     {
       provide: infra.providers.emailValidator,
-      useFactory: () => new EmailValidatorProvider(),
-    },
+      useFactory: () => new EmailValidatorProvider()
+    }
   ],
   exports: [
     infra.clients.dynamoDb,
     infra.clients.s3,
-    infra.providers.emailValidator,
-  ],
+    infra.providers.emailValidator
+  ]
 })
 export class ProvidersModule {}

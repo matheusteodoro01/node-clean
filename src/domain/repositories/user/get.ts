@@ -1,4 +1,4 @@
-import { User } from "../../models";
+import { User } from '../../models'
 
 export namespace GetUserRepositoryContract {
   export type Input = { userId: string }
@@ -6,5 +6,7 @@ export namespace GetUserRepositoryContract {
 }
 
 export interface GetUserRepositoryContract {
-  execute(input: GetUserRepositoryContract.Input): Promise<GetUserRepositoryContract.Output>
+  execute(
+    input: GetUserRepositoryContract.Input
+  ): Promise<GetUserRepositoryContract.Output>
 }

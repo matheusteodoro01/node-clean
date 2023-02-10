@@ -1,9 +1,11 @@
-
-enum Exchange { AUTOMATIC = "automatic", MANUAL = "manual" }
+enum Exchange {
+  AUTOMATIC = 'automatic',
+  MANUAL = 'manual'
+}
 
 export type Car = {
   carId: string
-  model: string,
+  model: string
   brand: string
   year: string
   km: number

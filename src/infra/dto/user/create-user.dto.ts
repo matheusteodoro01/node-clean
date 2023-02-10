@@ -5,5 +5,5 @@ export const createUserDto = object({
   password: string(),
   passwordConfirmation: string(),
   name: string(),
-  phone: string(),
+  phone: string()
 })

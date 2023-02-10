@@ -1,8 +1,10 @@
 import { validate } from 'email-validator'
-import { EmailValidatorProviderContract } from "@/domain/providers";
+import { EmailValidatorProviderContract } from '@/domain/providers'
 
 export class EmailValidatorProvider implements EmailValidatorProviderContract {
-  validate({ email }: EmailValidatorProviderContract.Input): EmailValidatorProviderContract.Output {
+  validate({
+    email
+  }: EmailValidatorProviderContract.Input): EmailValidatorProviderContract.Output {
     return validate(email)
   }
 }

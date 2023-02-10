@@ -4,7 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Inject,
-  Post,
+  Post
 } from '@nestjs/common'
 
 import { domain } from '@/domain/common/ioc'
@@ -15,7 +15,7 @@ import { createUserDto } from '@/infra/dto'
 export class CreateUserController {
   constructor(
     @Inject(domain.usecases.user.create)
-    private readonly createUserUsecase: CreateUserUsecase,
+    private readonly createUserUsecase: CreateUserUsecase
   ) {}
 
   @Post('/')

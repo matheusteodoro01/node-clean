@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common'
 import { infra } from '@/infra/common/ioc'
 import {
   DynamoSaveCarRepository,
-  DynamoSaveUserRepository,
+  DynamoSaveUserRepository
 } from '@/infra/repositories'
 
 import { EnvironmentModule } from './environment.module'
@@ -15,15 +15,15 @@ import { ProvidersModule } from './providers.module'
       provide: infra.repositories.car.save,
       useFactory: (dynamoInstance, tableName) =>
         new DynamoSaveCarRepository(dynamoInstance, tableName),
-      inject: [infra.clients.dynamoDb, infra.environment.carTableName],
+      inject: [infra.clients.dynamoDb, infra.environment.carTableName]
     },
     {
       provide: infra.repositories.user.save,
       useFactory: (dynamoInstance, tableName) =>
         new DynamoSaveUserRepository(dynamoInstance, tableName),
-      inject: [infra.clients.dynamoDb, infra.environment.carTableName],
-    },
+      inject: [infra.clients.dynamoDb, infra.environment.carTableName]
+    }
   ],
-  exports: [infra.repositories.car.save, infra.repositories.user.save],
+  exports: [infra.repositories.car.save, infra.repositories.user.save]
 })
 export class CarRepositoriesModule {}

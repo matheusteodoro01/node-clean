@@ -11,7 +11,7 @@ export namespace CreateUserUsecase {
 export class CreateUserUsecase {
   constructor(
     private readonly saveUserRepository: SaveUserRepositoryContract,
-    private readonly emailValidatorProvider: EmailValidatorProviderContract,
+    private readonly emailValidatorProvider: EmailValidatorProviderContract
   ) {}
 
   async execute({
@@ -19,7 +19,7 @@ export class CreateUserUsecase {
     password,
     passwordConfirmation,
     name,
-    phone,
+    phone
   }: CreateUserUsecase.Input): Promise<CreateUserUsecase.Output> {
     const emailValid = this.emailValidatorProvider.validate({ email })
 
@@ -32,7 +32,7 @@ export class CreateUserUsecase {
       password,
       passwordConfirmation,
       name,
-      phone,
+      phone
     })
 
     return user
