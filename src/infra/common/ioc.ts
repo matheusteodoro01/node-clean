@@ -4,7 +4,8 @@ export const infra = {
     s3: Symbol.for('S3Client')
   },
   environment: {
-    carTableName: Symbol.for('CarsTableName'),
+    carTableName: Symbol.for('CarTableName'),
+    userTableName: Symbol.for('UserTableName'),
     bucket: Symbol.for('S3Bucket'),
     logLevel: Symbol.for('LogLevel')
   },

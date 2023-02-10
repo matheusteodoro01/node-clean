@@ -17,6 +17,10 @@ export class EnvironmentModule {
           useValue: process.env['CAR_TABLE']
         },
         {
+          provide: infra.environment.userTableName,
+          useValue: process.env['USER_TABLE']
+        },
+        {
           provide: infra.environment.logLevel,
           useValue: process.env['LOG_LEVEL']
         }
@@ -24,6 +28,7 @@ export class EnvironmentModule {
       exports: [
         infra.environment.bucket,
         infra.environment.carTableName,
+        infra.environment.userTableName,
         infra.environment.logLevel
       ]
     }

@@ -24,7 +24,6 @@ export class DynamoSaveUserRepository implements SaveUserRepositoryContract {
         password,
         passwordConfirmation,
         phone,
-        carId: uuidv4(),
         userId: uuidv4()
       }
     }

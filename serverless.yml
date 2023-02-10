@@ -7,6 +7,7 @@ plugins:
 
 custom:
   CarTableName: 'cars'
+  UserTableName: 'users'
   CarImagesBucketName: 'car-images-kittech'
   serverless-offline:
     httpPort: 3001
@@ -41,8 +42,19 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - Fn::GetAtt: [CarsTable, Arn]
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - Fn::GetAtt: [UsersTable, Arn]
   environment:
     CAR_TABLE: ${self:custom.CarTableName}
+    USER_TABLE: ${self:custom.UserTableName}
     CAR_IMAGES_BUCKET: ${self:custom.CarImagesBucketName}
 
 functions:
@@ -66,6 +78,19 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: carId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.UserTableName}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
