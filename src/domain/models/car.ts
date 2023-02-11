@@ -1,9 +1,10 @@
-enum Exchange {
+export enum Exchange {
   AUTOMATIC = 'automatic',
   MANUAL = 'manual'
 }
 
 export type Car = {
+  userId: string
   carId: string
   model: string
   brand: string
@@ -17,6 +18,6 @@ export type Car = {
   acceptExchange: boolean
   licensed: boolean
   vehicleItems: string[]
-  price: string
-  images: string[]
+  price: number
+  images?: string[]
 }

@@ -10,7 +10,7 @@ import {
   GetCarUsecase,
   ProcessCarUsecase
 } from '@/domain/usecases'
-import { CreateUserController } from '@/infra/controllers'
+import { CreateCarController, CreateUserController } from '@/infra/controllers'
 import { ProvidersModule } from './providers.module'
 import { CarRepositoriesModule } from './car.repositories.module'
 
@@ -23,14 +23,17 @@ import { CarRepositoriesModule } from './car.repositories.module'
   providers: [
     {
       provide: domain.usecases.user.create,
-      useFactory: (
-        saveUserRepository,
-        emailValidatorProvider
-      ): CreateUserUsecase =>
+      useFactory: (saveUserRepository, emailValidatorProvider) =>
         new CreateUserUsecase(saveUserRepository, emailValidatorProvider),
       inject: [infra.repositories.user.save, infra.providers.emailValidator]
+    },
+    {
+      provide: domain.usecases.car.create,
+      useFactory: (getUserRepository, messageSenderProvider) =>
+        new CreateCarUsecase(getUserRepository, messageSenderProvider),
+      inject: [infra.repositories.user.findById, infra.providers.messageSender]
     }
   ],
-  controllers: [CreateUserController]
+  controllers: [CreateUserController, CreateCarController]
 })
 export class CarModule {}

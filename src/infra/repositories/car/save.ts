@@ -8,16 +8,17 @@ export class DynamoSaveCarRepository implements SaveCarRepositoryContract {
     private readonly tableName: string
   ) {}
 
-  async execute({
-    car,
-    userId
-  }: SaveCarRepositoryContract.Input): Promise<SaveCarRepositoryContract.Output> {
+  async execute(
+    input: SaveCarRepositoryContract.Input
+  ): Promise<SaveCarRepositoryContract.Output> {
+    const carId = uuidv4()
     const params = {
       TableName: this.tableName,
       Item: {
-        ...car,
-        userId,
-        carId: uuidv4()
+        ...input,
+        carId,
+        pk: `USER-${input.userId}`,
+        sk: `USER-${carId}`
       }
     }
 

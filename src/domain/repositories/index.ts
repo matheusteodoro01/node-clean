@@ -1,5 +1,5 @@
 export * from './car/get'
 export * from './car/save'
 export * from './car/saveCarImage'
-export * from './user/get'
+export * from './user/findById'
 export * from './user/save'

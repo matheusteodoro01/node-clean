@@ -6,21 +6,22 @@ plugins:
   - serverless-offline
 
 custom:
-  CarTableName: 'cars'
-  UserTableName: 'users'
-  CarImagesBucketName: 'car-images-kittech'
+  CarTableName: "cars"
+  UserTableName: "users"
+  CarImagesBucketName: "car-images-kittech"
+  CarQueueName: "process-car"
   serverless-offline:
     httpPort: 3001
     lambdaPort: 3000
     noPrependStageInUrl: true
   bundle:
     excludeFiles:
-      - '**/*.spec.ts'
-      - 'jest.setup.ts'
+      - "**/*.spec.ts"
+      - "jest.setup.ts"
     externals:
-      - '@nestjs/common'
-      - '@nestjs/core'
-      - '@nestjs/platform-express'
+      - "@nestjs/common"
+      - "@nestjs/core"
+      - "@nestjs/platform-express"
 
 provider:
   name: aws
@@ -52,16 +53,27 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - Fn::GetAtt: [UsersTable, Arn]
+    - Effect: Allow
+      Action:
+        - sqs:GetQueueUrl
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
+      Resource:
+        - Fn::GetAtt: [CarQueue, Arn]
   environment:
+    LOG_LEVEL: debug
     CAR_TABLE: ${self:custom.CarTableName}
     USER_TABLE: ${self:custom.UserTableName}
     CAR_IMAGES_BUCKET: ${self:custom.CarImagesBucketName}
+    CAR_QUEUE: !GetAtt [CarQueue, QueueUrl]
 
 functions:
   api:
     handler: src/main/api/handler.handler
     events:
-      - httpApi: '*'
+      - httpApi: "*"
 
 resources:
   Resources:
@@ -74,11 +86,15 @@ resources:
       Properties:
         TableName: ${self:custom.CarTableName}
         AttributeDefinitions:
-          - AttributeName: carId
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: sk
             AttributeType: S
         KeySchema:
-          - AttributeName: carId
+          - AttributeName: pk
             KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
@@ -87,11 +103,19 @@ resources:
       Properties:
         TableName: ${self:custom.UserTableName}
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: sk
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: pk
             KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    CarQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.CarQueueName}

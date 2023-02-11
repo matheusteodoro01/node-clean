@@ -1,12 +1,14 @@
 export const infra = {
   clients: {
     dynamoDb: Symbol.for('DynamoDBClient'),
-    s3: Symbol.for('S3Client')
+    s3: Symbol.for('S3Client'),
+    sqsClient: Symbol.for('sqsClient')
   },
   environment: {
     carTableName: Symbol.for('CarTableName'),
     userTableName: Symbol.for('UserTableName'),
-    bucket: Symbol.for('S3Bucket'),
+    carBucket: Symbol.for('CarBucket'),
+    carQueue: Symbol.for('CarQueue'),
     logLevel: Symbol.for('LogLevel')
   },
   repositories: {
@@ -17,7 +19,7 @@ export const infra = {
       delete: Symbol.for('DeleteCarRepository')
     },
     user: {
-      get: Symbol.for('GetUserRepository'),
+      findById: Symbol.for('FindUserByIdRepository'),
       save: Symbol.for('SaveUserRepository'),
       delete: Symbol.for('DeleteUserRepository')
     }

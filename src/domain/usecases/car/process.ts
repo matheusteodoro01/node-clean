@@ -6,11 +6,8 @@ import {
 import { DataStoreProviderContract } from '@/domain/providers'
 
 export namespace ProcessCarUsecase {
-  export type Input = {
-    userId: string
-    car: Omit<Car, 'carId'>
-    images: string[]
-  }
+  export type Input = Omit<Car, 'carId'>
+
   export type Output = void
 }
 
@@ -21,22 +18,21 @@ export class ProcessCarUsecase {
     private readonly saveCarImageRepository: SaveCarImageRepositoryContract
   ) {}
 
-  async execute({
-    car,
-    images,
-    userId
-  }: ProcessCarUsecase.Input): Promise<ProcessCarUsecase.Output> {
-    const carSave = await this.saveCarRepository.execute({ car, userId })
+  async execute(
+    input: ProcessCarUsecase.Input
+  ): Promise<ProcessCarUsecase.Output> {
+    const carSave = await this.saveCarRepository.execute(input)
+    if (input.images) {
+      const promises = input?.images.map(async (image) => {
+        const { id } = await this.dataStoreProvider.saveFile({ file: image })
 
-    const promises = images.map(async (image) => {
-      const { id } = await this.dataStoreProvider.saveFile({ file: image })
-
-      await this.saveCarImageRepository.execute({
-        carId: carSave.carId,
-        imageId: id
+        await this.saveCarImageRepository.execute({
+          carId: carSave.carId,
+          imageId: id
+        })
       })
-    })
 
-    await Promise.all(promises)
+      await Promise.all(promises)
+    }
   }
 }

@@ -9,12 +9,16 @@ export class EnvironmentModule {
       module: EnvironmentModule,
       providers: [
         {
-          provide: infra.environment.bucket,
+          provide: infra.environment.carBucket,
           useValue: process.env['CAR_IMAGES_BUCKET']
         },
         {
           provide: infra.environment.carTableName,
           useValue: process.env['CAR_TABLE']
+        },
+        {
+          provide: infra.environment.carQueue,
+          useValue: process.env['CAR_QUEUE']
         },
         {
           provide: infra.environment.userTableName,
@@ -26,8 +30,9 @@ export class EnvironmentModule {
         }
       ],
       exports: [
-        infra.environment.bucket,
+        infra.environment.carBucket,
         infra.environment.carTableName,
+        infra.environment.carQueue,
         infra.environment.userTableName,
         infra.environment.logLevel
       ]
