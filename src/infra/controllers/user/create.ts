@@ -21,6 +21,7 @@ export class CreateUserController {
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async execute(@Body() data: any) {
+    console.log(data.toString())
     return await this.createUserUsecase.execute(createUserDto.parse(data))
   }
 }

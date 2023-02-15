@@ -1,4 +1,5 @@
 export * from './car/get'
 export * from './car/create'
 export * from './car/process'
+export * from './car/uploadImage'
 export * from './user/create'

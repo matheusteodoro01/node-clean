@@ -8,9 +8,14 @@ import {
   CreateCarUsecase,
   CreateUserUsecase,
   GetCarUsecase,
-  ProcessCarUsecase
+  ProcessCarUsecase,
+  UploadCarImageUsecase
 } from '@/domain/usecases'
-import { CreateCarController, CreateUserController } from '@/infra/controllers'
+import {
+  CreateCarController,
+  CreateUserController,
+  UploadCarImageController
+} from '@/infra/controllers'
 import { ProvidersModule } from './providers.module'
 import { CarRepositoriesModule } from './car.repositories.module'
 
@@ -32,8 +37,18 @@ import { CarRepositoriesModule } from './car.repositories.module'
       useFactory: (getUserRepository, messageSenderProvider) =>
         new CreateCarUsecase(getUserRepository, messageSenderProvider),
       inject: [infra.repositories.user.findById, infra.providers.messageSender]
+    },
+    {
+      provide: domain.usecases.car.uploadFile,
+      useFactory: (dataStoreProvider) =>
+        new UploadCarImageUsecase(dataStoreProvider),
+      inject: [infra.providers.dataStore]
     }
   ],
-  controllers: [CreateUserController, CreateCarController]
+  controllers: [
+    CreateUserController,
+    CreateCarController,
+    UploadCarImageController
+  ]
 })
 export class CarModule {}

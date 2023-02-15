@@ -1,7 +1,12 @@
 export namespace DataStoreProviderContract {
   export type getFileInput = { id: string }
   export type getFileOutput = { files: string[] }
-  export type saveFileInput = { file: any }
+  export type saveFileInput = {
+    file: Buffer
+    fileName: string
+    encoding: string
+    mimetype: string
+  }
   export type saveFileOutput = { id: string }
 }
 

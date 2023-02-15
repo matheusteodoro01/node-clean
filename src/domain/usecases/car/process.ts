@@ -24,11 +24,9 @@ export class ProcessCarUsecase {
     const carSave = await this.saveCarRepository.execute(input)
     if (input.images) {
       const promises = input?.images.map(async (image) => {
-        const { id } = await this.dataStoreProvider.saveFile({ file: image })
-
         await this.saveCarImageRepository.execute({
           carId: carSave.carId,
-          imageId: id
+          imageId: ''
         })
       })
 

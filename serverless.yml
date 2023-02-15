@@ -29,10 +29,10 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - s3:ListBucket
         - s3:PutObject
-      Resource:
-        - Fn::GetAtt: [CarImagesBucket, Arn]
+        - s3:GetObject
+        - s3:ListBucket
+      Resource: arn:aws:s3:::car-images-kittech/*
     - Effect: Allow
       Action:
         - dynamodb:Query

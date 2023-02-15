@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { infra } from '@/infra/common/ioc'
-import { S3Client } from '@aws-sdk/client-s3'
+import { S3 } from 'aws-sdk'
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb'
 import {
   EmailValidatorProvider,
+  S3DataStoreProvider,
   SQSMessageSenderProvider
 } from '@/infra/providers'
 import { SQSClient } from '@aws-sdk/client-sqs'
@@ -19,7 +20,7 @@ import { EnvironmentModule } from './environment.module'
     },
     {
       provide: infra.clients.s3,
-      useFactory: () => new S3Client({})
+      useFactory: () => new S3({})
     },
 
     {
@@ -35,6 +36,12 @@ import { EnvironmentModule } from './environment.module'
       useFactory: (sqsClient, queue) =>
         new SQSMessageSenderProvider(sqsClient, queue),
       inject: [infra.clients.sqsClient, infra.environment.carQueue]
+    },
+    {
+      provide: infra.providers.dataStore,
+      useFactory: (s3Client, bucketName) =>
+        new S3DataStoreProvider(s3Client, bucketName),
+      inject: [infra.clients.s3, infra.environment.carBucket]
     }
   ],
   exports: [
@@ -42,7 +49,8 @@ import { EnvironmentModule } from './environment.module'
     infra.clients.s3,
     infra.clients.sqsClient,
     infra.providers.emailValidator,
-    infra.providers.messageSender
+    infra.providers.messageSender,
+    infra.providers.dataStore
   ]
 })
 export class ProvidersModule {}

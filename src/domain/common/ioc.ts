@@ -6,7 +6,8 @@ export const domain = {
     car: {
       get: Symbol.for('getCarUsecase'),
       create: Symbol.for('createCarUsecase'),
-      process: Symbol.for('processCarUsecase')
+      process: Symbol.for('processCarUsecase'),
+      uploadFile: Symbol.for('uploadCarImageUsecase')
     }
   }
 }
