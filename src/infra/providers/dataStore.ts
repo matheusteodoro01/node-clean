@@ -17,14 +17,15 @@ export class S3DataStoreProvider {
     encoding,
     mimetype
   }: DataStoreProviderContract.saveFileInput): Promise<DataStoreProviderContract.saveFileOutput> {
+    const key = `${uuidv4()}.${fileName.split('.').at(-1)}`
     const params = {
       Bucket: this.bucketName,
-      Key: uuidv4(),
+      Key: key,
       Body: file,
       ContentType: mimetype,
-      ContentEncoding: encoding
+      ContentEncoding: encoding,
+      ACL: 'public-read'
     }
-
     const { Key } = await this.s3Client.upload(params).promise()
 
     return { id: Key }

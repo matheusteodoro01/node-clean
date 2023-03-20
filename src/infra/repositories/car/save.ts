@@ -18,7 +18,7 @@ export class DynamoSaveCarRepository implements SaveCarRepositoryContract {
         ...input,
         carId,
         pk: `USER-${input.userId}`,
-        sk: `USER-${carId}`
+        sk: `CAR-${carId}`
       }
     }
 

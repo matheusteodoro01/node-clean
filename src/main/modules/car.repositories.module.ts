@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { infra } from '@/infra/common/ioc'
 import {
   DynamoFindUserByIdRepository,
+  DynamoSaveCarImageRepository,
   DynamoSaveCarRepository,
   DynamoSaveUserRepository
 } from '@/infra/repositories'
@@ -16,6 +17,13 @@ import { ProvidersModule } from './providers.module'
       provide: infra.repositories.car.save,
       useFactory: (dynamoInstance, tableName) =>
         new DynamoSaveCarRepository(dynamoInstance, tableName),
+      inject: [infra.clients.dynamoDb, infra.environment.carTableName]
+    },
+
+    {
+      provide: infra.repositories.car.saveImage,
+      useFactory: (dynamoInstance, tableName) =>
+        new DynamoSaveCarImageRepository(dynamoInstance, tableName),
       inject: [infra.clients.dynamoDb, infra.environment.carTableName]
     },
     {
@@ -33,6 +41,7 @@ import { ProvidersModule } from './providers.module'
   ],
   exports: [
     infra.repositories.car.save,
+    infra.repositories.car.saveImage,
     infra.repositories.user.save,
     infra.repositories.user.findById
   ]

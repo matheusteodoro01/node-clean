@@ -22,6 +22,6 @@ export class CreateCarUsecase {
     if (!user) {
       throw new Error('User not found')
     }
-    await this.messageSenderProvider.send({ body: { input } })
+    await this.messageSenderProvider.send({ body: input })
   }
 }

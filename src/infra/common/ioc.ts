@@ -16,6 +16,7 @@ export const infra = {
       get: Symbol.for('GetCarRepository'),
       list: Symbol.for('ListCarRepository'),
       save: Symbol.for('SaveCarRepository'),
+      saveImage: Symbol.for('SaveCarImageRepository'),
       delete: Symbol.for('DeleteCarRepository')
     },
     user: {

@@ -3,7 +3,6 @@ import {
   SaveCarRepositoryContract,
   SaveCarImageRepositoryContract
 } from '@/domain/repositories'
-import { DataStoreProviderContract } from '@/domain/providers'
 
 export namespace ProcessCarUsecase {
   export type Input = Omit<Car, 'carId'>
@@ -14,7 +13,6 @@ export namespace ProcessCarUsecase {
 export class ProcessCarUsecase {
   constructor(
     private readonly saveCarRepository: SaveCarRepositoryContract,
-    private readonly dataStoreProvider: DataStoreProviderContract,
     private readonly saveCarImageRepository: SaveCarImageRepositoryContract
   ) {}
 
@@ -22,11 +20,11 @@ export class ProcessCarUsecase {
     input: ProcessCarUsecase.Input
   ): Promise<ProcessCarUsecase.Output> {
     const carSave = await this.saveCarRepository.execute(input)
-    if (input.images) {
-      const promises = input?.images.map(async (image) => {
+    if (input?.images) {
+      const promises = input.images?.map(async (image) => {
         await this.saveCarImageRepository.execute({
           carId: carSave.carId,
-          imageId: ''
+          imageId: image
         })
       })
 

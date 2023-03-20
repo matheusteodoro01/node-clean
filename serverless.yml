@@ -15,9 +15,6 @@ custom:
     lambdaPort: 3000
     noPrependStageInUrl: true
   bundle:
-    excludeFiles:
-      - "**/*.spec.ts"
-      - "jest.setup.ts"
     externals:
       - "@nestjs/common"
       - "@nestjs/core"
@@ -28,10 +25,7 @@ provider:
   runtime: nodejs16.x
   iamRoleStatements:
     - Effect: Allow
-      Action:
-        - s3:PutObject
-        - s3:GetObject
-        - s3:ListBucket
+      Action: "*"
       Resource: arn:aws:s3:::car-images-kittech/*
     - Effect: Allow
       Action:
@@ -74,6 +68,12 @@ functions:
     handler: src/main/api/handler.handler
     events:
       - httpApi: "*"
+  proccess-car:
+    handler: src/main/lambdas/proccess-car.handler
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [CarQueue, Arn]
 
 resources:
   Resources:
